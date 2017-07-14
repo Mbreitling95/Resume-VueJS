@@ -133,6 +133,7 @@
       {{ Projects_Show ? "Collapse Projects" : "Display Projects" }}
     </button>
 
+  <transition name="slide-fade">
     <div v-if="Projects_Show" id="ProjectSection2">
       <h2>Projects</h2>
       <template v-for="project in Projects">
@@ -151,6 +152,35 @@
         </div>
       </template>
     </div>
+  </transition>
+  
+
+    <button @click="Projects_Show_T1 = !Projects_Show_T1" v-bind:class="Projects_Show_T1 ? 'Hide' : 'Show'" >
+      {{ Projects_Show_T1 ? "Collapse Projects" : "Display Projects" }}
+    </button>
+
+    <transition name="fade">    
+     <div v-if="Projects_Show_T1" id="ProjectSection3">
+      <h2>Projects</h2>
+      <template v-for="project in Projects">
+        <div class="project-entry">
+          <div class="theme-text project-title ">{{ project.title }}:</div>
+          <div class="project-padding">
+            Employer: <span class="theme-text">{{ project.employer }}</span>
+            <span class="location-text">
+              <div>{{ project.location }}</div>
+              <div>{{ project.dates }}</div>
+            </span>
+            <div>Role: <span class="theme-text">{{ project.position }}</span></div>
+            <div> Project: {{ project.description }}</div>
+          </div>
+          <br/><img src="../assets/Responsive-SPA-Cropped2.png" alt="Screenshot of Project" class="project-img" /><hr/>
+        </div>
+      </template>
+    </div>
+  </transition>
+
+
 
   <button @click="onlineCourses_show = !onlineCourses_show" v-bind:class="onlineCourses_show ? 'Hide' : 'Show'" >
       {{ onlineCourses_show ? "Collapse Courses" : "Display Courses" }}
@@ -204,6 +234,7 @@ export default {
     return {
       todos: ["Add a Comment","Post a Question", "Delete a comment", "Use the Close button ->", "Thats enough Placeholders I think"],
       Jobs_Show: true,
+      Projects_Show_T1: true,
       Projects_Show: true,
       onlineCourses_show : true,
       bio: {
@@ -315,6 +346,29 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0
+}
+
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for <2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
+
 
 body,
 div,
