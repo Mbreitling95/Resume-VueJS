@@ -1,21 +1,67 @@
 
 <template>
-  <div class="world">
-    
+  <div class="interactive">
+    <div class="flex-box grey">
+      <div class="flex-item">
+        <label class="black-text" style="margin-right:15px;">Name:</label>
+        <input type="text" name="Name" class="theme-text" v-model="bio.name" >  
+      </div>
+      <div class="flex-item">
+        <label class="black-text" style="margin-right:15px;" >Role:</label>
+        <input type="text" name="Name" v-model="bio.role" >     
+      </div>
+      <ul id="topContacts" class="flex-box ">
+            <!-- <li class="flex-column" style="text-align:center;">
+              <span class="flex-box">
+                <label class="black-text" style="margin-right:15px;">Name:</label>
+                <input type="text" name="Name" class="theme-text" v-model="bio.name" >
+              </span>
+            </li>
+            <li class="flex-column" style="text-align:center;">
+              <span class="flex-box">
+                <label class="black-text" style="margin-right:15px;" >Role:</label>
+                <input type="text" name="Name" v-model="bio.role" >
+              </span>
+            </li> -->
+        <template v-for="contact in bio.contacts"> 
+            <li class="flex-column" style="text-align:center;">
+              <span class="flex-box">
+                <label class=" theme-text" style="margin-right:15px;">{{ contact[0] }}:  </label>
+                <input type="text" name="" v-model="contact[1]" >
+              </span>
+            </li>
+        </template> 
+      </ul>
+    </div>
     
     <div id="header" class="center-content clear-fix">
-      <span>
+      
+      
+
+      <span >
+
         <h1 id="name">{{ bio.name }}</h1>
         <h2  class="white-text inline-block">| {{ bio.role }}</h2><hr/>
       </span>
-      <ul id="topContacts" class="flex-box">
-        <template v-for="contact in bio.contacts"> 
-              <li class="flex-item">
-              <span class="theme-text">{{ contact[0] }} :</span>
-              <span class="white-text">{{ contact[1] }}</span>
+      <div class="flex-box">
+        <ul id="topContacts" class="flex-box ">
+          <template v-for="contact in bio.contacts"> 
+              <li class="flex-column" style="text-align:center;">
+                <span class="flex-item theme-text">{{ contact[0] }}</span>
+                <span class="flex-item white-text right">{{ contact[1] }}</span>
               </li>
           </template> 
-      </ul>
+        </ul>
+        <!-- <ul id="topContacts" class="flex-column ">
+          <template v-for="contact in bio.contacts"> 
+                <li class="flex-item">
+                  <span class="white-text">{{ contact[1] }}</span>
+                </li>
+            </template> 
+        </ul> -->
+      </div>
+      
+
       <div>
         <span class="welcome-message">{{ bio.welcomeMessage }}</span>
         <img src="../assets/Profile_Pic.jpg" alt="My Face" class="biopic" />
@@ -30,10 +76,42 @@
           </template>
         </ul>
       </div>  
+        <button @click="Jobs_Show = !Jobs_Show" v-bind:class="Jobs_Show ? 'Hide' : 'Show'" >
+          {{ Jobs_Show ? "Collapse Jobs" : "Display Jobs" }}
+        </button>
+        <button @click="Projects_Show = !Projects_Show" v-bind:class="Projects_Show ? 'Hide' : 'Show'" >
+          {{ Projects_Show ? "Collapse Projects" : "Display Projects" }}
+        </button>
+        <button @click="onlineCourses_show = !onlineCourses_show"  v-bind:class="onlineCourses_show ? 'Hide' : 'Show'" >
+         {{ onlineCourses_show ? "Collapse Courses" : "Display Courses" }}
+        </button>
+
     </div>
-
-
-    <div id="WorkSection" class="grey">
+    <div id="todo-list-example" style="">
+      <textarea
+        v-model="newTodoText"
+        v-on:keyup.enter="addNewTodo"
+        placeholder="Add a todo" 
+        style="margin:40px;width:300px;height:50px;padding:10px" ></textarea>    <br>
+      <ul v-for="(todo, index) in todos" v-bind:key="index" class="flex-box" style="display: inline-block;">
+        
+          <li class="flex-item"  ><span style="border:solid 1px black" class="flex-item" >{{ todo }}</span>
+            <button class="flex-item Hide" style="border-radius:20%;min-width:20px;" v-on:click="todos.splice(index, 1)">x</button>
+          </li>
+          
+        <!-- <li
+          is="todo-item"
+          v-for="(todo, index) in todos"
+          v-bind:key="index"
+          v-bind:title="todo"
+          v-on:remove="todos.splice(index, 1)"> 
+        </li> -->
+      </ul>
+</div>
+    <button @click="Jobs_Show = !Jobs_Show" v-bind:class="Jobs_Show ? 'Hide' : 'Show'" >
+       {{ Jobs_Show ? "Collapse Jobs" : "Display Jobs" }}
+    </button>
+    <div v-if="Jobs_Show" id="WorkSection" class="grey">
       <h2>Work Experience</h2>
       <template v-for="job in Jobs" >
         <div class="work-entry">
@@ -50,7 +128,13 @@
         </div>
       </template>
     </div>
-    <div id="ProjectSection2">
+    
+    <button @click="Projects_Show = !Projects_Show" v-bind:class="Projects_Show ? 'Hide' : 'Show'" >
+      {{ Projects_Show ? "Collapse Projects" : "Display Projects" }}
+    </button>
+
+  <transition name="slide-fade">
+    <div v-if="Projects_Show" id="ProjectSection2">
       <h2>Projects</h2>
       <template v-for="project in Projects">
         <div class="project-entry">
@@ -68,8 +152,44 @@
         </div>
       </template>
     </div>
+  </transition>
+  
 
-  <div id="CourseSection" class="grey">
+    <button @click="Projects_Show_T1 = !Projects_Show_T1" v-bind:class="Projects_Show_T1 ? 'Hide' : 'Show'" >
+      {{ Projects_Show_T1 ? "Collapse Projects" : "Display Projects" }}
+    </button>
+
+    <transition 
+    v-on:before-enter="beforeEnter"
+    v-on:enter="enter"
+    v-on:leave="leave"
+    v-bind:css="false" >    
+     <div v-if="Projects_Show_T1" id="ProjectSection3">
+      <h2>Projects</h2>
+      <template v-for="project in Projects">
+        <div class="project-entry">
+          <div class="theme-text project-title ">{{ project.title }}:</div>
+          <div class="project-padding">
+            Employer: <span class="theme-text">{{ project.employer }}</span>
+            <span class="location-text">
+              <div>{{ project.location }}</div>
+              <div>{{ project.dates }}</div>
+            </span>
+            <div>Role: <span class="theme-text">{{ project.position }}</span></div>
+            <div> Project: {{ project.description }}</div>
+          </div>
+          <br/><img src="../assets/Responsive-SPA-Cropped2.png" alt="Screenshot of Project" class="project-img" /><hr/>
+        </div>
+      </template>
+    </div>
+  </transition>
+
+
+
+  <button @click="onlineCourses_show = !onlineCourses_show" v-bind:class="onlineCourses_show ? 'Hide' : 'Show'" >
+      {{ onlineCourses_show ? "Collapse Courses" : "Display Courses" }}
+  </button>
+  <div v-if="onlineCourses_show" id="CourseSection" class="grey">
     <h2>Online Classes</h2>
     <template v-for="course in onlineCourses">
       <div class="work-entry">
@@ -78,7 +198,19 @@
       </div>
     </template>
   </div>
+  
 
+  <div id="lets-connect" class="theme center-text">
+    <h2 class="dark-gray">Let's Connect</h2>
+    <ul id="topContacts" class="flex-box">
+      <template v-for="contact in bio.contacts"> 
+            <li class="flex-item">
+            <span class="theme-text">{{ contact[0] }} :</span>
+            <span class="black-text">{{ contact[1] }}</span>
+            </li>
+        </template> 
+    </ul>
+  </div>
     
 
 
@@ -86,7 +218,7 @@
 
   </div>
 </template>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
 <script>
 
 /*new Vue.component('skill-item', {
@@ -101,10 +233,14 @@
 
 
 export default {
-  name: "world",
+  name: "interactive",
   data () {
     return {
-      msg: "Test",
+      todos: ["Add a Comment","Post a Question", "Delete a comment", "Use the Close button ->", "Thats enough Placeholders I think"],
+      Jobs_Show: true,
+      Projects_Show_T1: true,
+      Projects_Show: true,
+      onlineCourses_show : true,
       bio: {
         name: "Matthew Breitling",
         role: "Front End Web Developer",
@@ -112,7 +248,7 @@ export default {
         bioPic: "../assets/Profile_Pic.jpg",
         test: "",
         skills: ["HTML & HTML5", "CSS & CSS3", 
-          "Javascript", "JQuery ", "Knockout JS", "React JS (This site is made with React)"
+          "Javascript", "JQuery ", "Knockout JS", "React JS", "Vue JS (This App is made with Vue JS)"
         ],
         contacts: [
           ["Mobile", "903-588-4139"],
@@ -134,7 +270,7 @@ export default {
         }
       ],
       Projects: [
-        {
+        { show: true,
           employer: "Breitling Consulting",
           title: "Responsive Login/Signup SPA",
           position: "Front End Developer",
@@ -200,6 +336,29 @@ export default {
         },
       ]
     }
+  },//data
+  methods: {
+    addNewTodo: function () {
+      this.todos.push(this.newTodoText)
+      this.newTodoText = ''
+    },
+    beforeEnter: function (el) {
+      el.style.opacity = 0
+    },
+    enter: function (el, done) {
+      Velocity(el, { opacity: 1, fontSize: '1.4em' }, { duration: 300 })
+      Velocity(el, { fontSize: '1em' }, { complete: done })
+    },
+    leave: function (el, done) {
+      Velocity(el, { translateX: '15px', rotateZ: '50deg' }, { duration: 600 })
+      Velocity(el, { rotateZ: '100deg' }, { loop: 2 })
+      Velocity(el, {
+        rotateZ: '45deg',
+        translateY: '30px',
+        translateX: '30px',
+        opacity: 0
+      }, { complete: done })
+    }
   }
 }
 
@@ -208,6 +367,29 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0
+}
+
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for <2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
+
 
 body,
 div,
@@ -440,6 +622,29 @@ span {
   overflow:auto;
   width:50%;
   
+}
+
+
+.Show {
+  min-width:120px;
+  font-weight:bold;
+  color:#2F7FE9;
+  background-color: white;
+}
+.Hide:hover {
+  color:#2F7FE9;
+  background-color: white;
+
+}
+.Hide {
+  min-width:120px;
+  font-weight:bold;
+  color:white;
+  background-color: #2F7FE9;
+}
+.Show:hover {
+  color:white;
+  background-color: #2F7FE9;
 }
 
 
