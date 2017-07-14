@@ -6,7 +6,8 @@
       <ul>
       <li>Current: {{ $route.name }}</li>
       <li>Nav to: <router-link to="/">Home</router-link></li>
-      <li>Nav to: <router-link to="/world">World</router-link></li>
+      <li>Nav to: <router-link to="/static">Static Resume</router-link></li>
+      <li>Nav to: <router-link to="/Interactive">Interactive Resume</router-link></li>
       <li></li>  
       </ul>
 

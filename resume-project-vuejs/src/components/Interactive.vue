@@ -1,6 +1,6 @@
 
 <template>
-  <div class="world">
+  <div class="interactive">
     
     
     <div id="header" class="center-content clear-fix">
@@ -42,11 +42,42 @@
           </template>
         </ul>
       </div>  
+        <button @click="Jobs_Show = !Jobs_Show" v-bind:class="Jobs_Show ? 'Hide' : 'Show'" >
+          {{ Jobs_Show ? "Collapse Jobs" : "Display Jobs" }}
+        </button>
+        <button @click="Projects_Show = !Projects_Show" v-bind:class="Projects_Show ? 'Hide' : 'Show'" >
+          {{ Projects_Show ? "Collapse Projects" : "Display Projects" }}
+        </button>
+        <button @click="onlineCourses_show = !onlineCourses_show"  v-bind:class="onlineCourses_show ? 'Hide' : 'Show'" >
+         {{ onlineCourses_show ? "Collapse Courses" : "Display Courses" }}
+        </button>
 
     </div>
-
-
-    <div id="WorkSection" class="grey">
+    <div id="todo-list-example" style="">
+      <textarea
+        v-model="newTodoText"
+        v-on:keyup.enter="addNewTodo"
+        placeholder="Add a todo" 
+        style="margin:40px;width:300px;height:50px;padding:10px" ></textarea>    <br>
+      <ul v-for="(todo, index) in todos" v-bind:key="index" class="flex-box" style="display: inline-block;">
+        
+          <li class="flex-item"  ><span style="border:solid 1px black" class="flex-item" >{{ todo }}</span>
+            <button class="flex-item Hide" style="border-radius:20%;min-width:20px;" v-on:click="todos.splice(index, 1)">x</button>
+          </li>
+          
+        <!-- <li
+          is="todo-item"
+          v-for="(todo, index) in todos"
+          v-bind:key="index"
+          v-bind:title="todo"
+          v-on:remove="todos.splice(index, 1)"> 
+        </li> -->
+      </ul>
+</div>
+    <button @click="Jobs_Show = !Jobs_Show" v-bind:class="Jobs_Show ? 'Hide' : 'Show'" >
+       {{ Jobs_Show ? "Collapse Jobs" : "Display Jobs" }}
+    </button>
+    <div v-if="Jobs_Show" id="WorkSection" class="grey">
       <h2>Work Experience</h2>
       <template v-for="job in Jobs" >
         <div class="work-entry">
@@ -63,7 +94,12 @@
         </div>
       </template>
     </div>
-    <div id="ProjectSection2">
+    
+    <button @click="Projects_Show = !Projects_Show" v-bind:class="Projects_Show ? 'Hide' : 'Show'" >
+      {{ Projects_Show ? "Collapse Projects" : "Display Projects" }}
+    </button>
+
+    <div v-if="Projects_Show" id="ProjectSection2">
       <h2>Projects</h2>
       <template v-for="project in Projects">
         <div class="project-entry">
@@ -82,7 +118,10 @@
       </template>
     </div>
 
-  <div id="CourseSection" class="grey">
+  <button @click="onlineCourses_show = !onlineCourses_show" v-bind:class="onlineCourses_show ? 'Hide' : 'Show'" >
+      {{ onlineCourses_show ? "Collapse Courses" : "Display Courses" }}
+  </button>
+  <div v-if="onlineCourses_show" id="CourseSection" class="grey">
     <h2>Online Classes</h2>
     <template v-for="course in onlineCourses">
       <div class="work-entry">
@@ -126,10 +165,13 @@
 
 
 export default {
-  name: "world",
+  name: "interactive",
   data () {
     return {
-      msg: "Test",
+      todos: ["Add a Comment","Post a Question", "Delete a comment", "Use the Close button ->", "Thats enough Placeholders I think"],
+      Jobs_Show: true,
+      Projects_Show: true,
+      onlineCourses_show : true,
       bio: {
         name: "Matthew Breitling",
         role: "Front End Web Developer",
@@ -137,7 +179,7 @@ export default {
         bioPic: "../assets/Profile_Pic.jpg",
         test: "",
         skills: ["HTML & HTML5", "CSS & CSS3", 
-          "Javascript", "JQuery ", "Knockout JS", "React JS (This site is made with React)"
+          "Javascript", "JQuery ", "Knockout JS", "React JS", "Vue JS (This App is made with Vue JS)"
         ],
         contacts: [
           ["Mobile", "903-588-4139"],
@@ -159,7 +201,7 @@ export default {
         }
       ],
       Projects: [
-        {
+        { show: true,
           employer: "Breitling Consulting",
           title: "Responsive Login/Signup SPA",
           position: "Front End Developer",
@@ -224,6 +266,12 @@ export default {
           url: "https://www.udacity.com/courses/ud989/"
         },
       ]
+    }
+  },//data
+  methods: {
+    addNewTodo: function () {
+      this.todos.push(this.newTodoText)
+      this.newTodoText = ''
     }
   }
 }
@@ -465,6 +513,29 @@ span {
   overflow:auto;
   width:50%;
   
+}
+
+
+.Show {
+  min-width:120px;
+  font-weight:bold;
+  color:#2F7FE9;
+  background-color: white;
+}
+.Hide:hover {
+  color:#2F7FE9;
+  background-color: white;
+
+}
+.Hide {
+  min-width:120px;
+  font-weight:bold;
+  color:white;
+  background-color: #2F7FE9;
+}
+.Show:hover {
+  color:white;
+  background-color: #2F7FE9;
 }
 
 
