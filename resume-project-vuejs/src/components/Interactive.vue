@@ -1,11 +1,45 @@
 
 <template>
   <div class="interactive">
-    
+    <div class="flex-box grey">
+      <div class="flex-item">
+        <label class="black-text" style="margin-right:15px;">Name:</label>
+        <input type="text" name="Name" class="theme-text" v-model="bio.name" >  
+      </div>
+      <div class="flex-item">
+        <label class="black-text" style="margin-right:15px;" >Role:</label>
+        <input type="text" name="Name" v-model="bio.role" >     
+      </div>
+      <ul id="topContacts" class="flex-box ">
+            <!-- <li class="flex-column" style="text-align:center;">
+              <span class="flex-box">
+                <label class="black-text" style="margin-right:15px;">Name:</label>
+                <input type="text" name="Name" class="theme-text" v-model="bio.name" >
+              </span>
+            </li>
+            <li class="flex-column" style="text-align:center;">
+              <span class="flex-box">
+                <label class="black-text" style="margin-right:15px;" >Role:</label>
+                <input type="text" name="Name" v-model="bio.role" >
+              </span>
+            </li> -->
+        <template v-for="contact in bio.contacts"> 
+            <li class="flex-column" style="text-align:center;">
+              <span class="flex-box">
+                <label class=" theme-text" style="margin-right:15px;">{{ contact[0] }}:  </label>
+                <input type="text" name="" v-model="contact[1]" >
+              </span>
+            </li>
+        </template> 
+      </ul>
+    </div>
     
     <div id="header" class="center-content clear-fix">
       
+      
+
       <span >
+
         <h1 id="name">{{ bio.name }}</h1>
         <h2  class="white-text inline-block">| {{ bio.role }}</h2><hr/>
       </span>

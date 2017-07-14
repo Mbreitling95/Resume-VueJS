@@ -4,7 +4,8 @@
 
     <h2>My Contact info</h2>
     <ul v-for="(value, key) in bio.ObjContacts" >
-      <li>{{ key }}: <a href="#" target="_blank">{{ value }}</a></li>
+       
+      <li>{{ key }}: <a href="# " target="_blank">{{ value }}</a></li>
     </ul>
     <h2>My Accounts </h2>
     <ul>
