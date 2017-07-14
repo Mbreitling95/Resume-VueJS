@@ -4,18 +4,30 @@
     
     
     <div id="header" class="center-content clear-fix">
-      <span>
+      
+      <span >
         <h1 id="name">{{ bio.name }}</h1>
         <h2  class="white-text inline-block">| {{ bio.role }}</h2><hr/>
       </span>
-      <ul id="topContacts" class="flex-box">
-        <template v-for="contact in bio.contacts"> 
-              <li class="flex-item">
-              <span class="theme-text">{{ contact[0] }} :</span>
-              <span class="white-text">{{ contact[1] }}</span>
+      <div class="flex-box">
+        <ul id="topContacts" class="flex-box ">
+          <template v-for="contact in bio.contacts"> 
+              <li class="flex-column" style="text-align:center;">
+                <span class="flex-item theme-text">{{ contact[0] }}</span>
+                <span class="flex-item white-text right">{{ contact[1] }}</span>
               </li>
           </template> 
-      </ul>
+        </ul>
+        <!-- <ul id="topContacts" class="flex-column ">
+          <template v-for="contact in bio.contacts"> 
+                <li class="flex-item">
+                  <span class="white-text">{{ contact[1] }}</span>
+                </li>
+            </template> 
+        </ul> -->
+      </div>
+      
+
       <div>
         <span class="welcome-message">{{ bio.welcomeMessage }}</span>
         <img src="../assets/Profile_Pic.jpg" alt="My Face" class="biopic" />
@@ -30,6 +42,7 @@
           </template>
         </ul>
       </div>  
+
     </div>
 
 
@@ -78,7 +91,19 @@
       </div>
     </template>
   </div>
+  
 
+  <div id="lets-connect" class="theme center-text">
+    <h2 class="dark-gray">Let's Connect</h2>
+    <ul id="topContacts" class="flex-box">
+      <template v-for="contact in bio.contacts"> 
+            <li class="flex-item">
+            <span class="theme-text">{{ contact[0] }} :</span>
+            <span class="black-text">{{ contact[1] }}</span>
+            </li>
+        </template> 
+    </ul>
+  </div>
     
 
 
