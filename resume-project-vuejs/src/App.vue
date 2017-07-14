@@ -1,15 +1,25 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <p>Current Page: {{ $route.name }}</p>
-    
-    <p>
-      <router-link to="/">Go to Home</router-link>
-      <router-link to="/world">Go to World</router-link>
+    <div class="nav" >
+      <img src="./assets/logo.png">
+      
+      <ul>
+      <li>Current: {{ $route.name }}</li>
+      <li>Nav to: <router-link to="/">Home</router-link></li>
+      <li>Nav to: <router-link to="/world">World</router-link></li>
+      <li></li>  
+      </ul>
 
-    </p>
+    </div>
+    
 
     <router-view></router-view>
+
+
+
+    
+
+
   </div>
 
 
@@ -32,11 +42,21 @@ export default {
 </script>
 
 <style>
+.nav {
+  position:relative;
+  width:40%;
+  margin-left:auto;
+  margin-right:auto;
+}
+.nav li {
+  min-width:200px;
+  display:inline-block;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /*text-align: center;*/
   color: #2c3e50;
   margin-top: 60px;
 }
