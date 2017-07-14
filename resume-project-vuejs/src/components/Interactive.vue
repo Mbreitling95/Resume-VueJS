@@ -159,7 +159,11 @@
       {{ Projects_Show_T1 ? "Collapse Projects" : "Display Projects" }}
     </button>
 
-    <transition name="fade">    
+    <transition 
+    v-on:before-enter="beforeEnter"
+    v-on:enter="enter"
+    v-on:leave="leave"
+    v-bind:css="false" >    
      <div v-if="Projects_Show_T1" id="ProjectSection3">
       <h2>Projects</h2>
       <template v-for="project in Projects">
@@ -214,7 +218,7 @@
 
   </div>
 </template>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
 <script>
 
 /*new Vue.component('skill-item', {
@@ -337,6 +341,23 @@ export default {
     addNewTodo: function () {
       this.todos.push(this.newTodoText)
       this.newTodoText = ''
+    },
+    beforeEnter: function (el) {
+      el.style.opacity = 0
+    },
+    enter: function (el, done) {
+      Velocity(el, { opacity: 1, fontSize: '1.4em' }, { duration: 300 })
+      Velocity(el, { fontSize: '1em' }, { complete: done })
+    },
+    leave: function (el, done) {
+      Velocity(el, { translateX: '15px', rotateZ: '50deg' }, { duration: 600 })
+      Velocity(el, { rotateZ: '100deg' }, { loop: 2 })
+      Velocity(el, {
+        rotateZ: '45deg',
+        translateY: '30px',
+        translateX: '30px',
+        opacity: 0
+      }, { complete: done })
     }
   }
 }
